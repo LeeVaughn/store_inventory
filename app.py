@@ -12,3 +12,7 @@ class Product(Model):
 
     class Meta():
         database = db
+
+if __name__ == "__main__":
+    db.connect()
+    
