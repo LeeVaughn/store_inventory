@@ -15,7 +15,7 @@ class Product(Model):
     class Meta():
         database = db
 
-def add_products():
+def add_inventory():
     with open("inventory.csv", newline="") as csvfile:
         inventory = csv.DictReader(csvfile, delimiter=",")
         
@@ -38,4 +38,4 @@ def add_products():
 if __name__ == "__main__":
     db.connect()
     db.create_tables([Product], safe=True)
-    add_products()
+    add_inventory()
