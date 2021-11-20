@@ -1,6 +1,7 @@
 from peewee import *
+import datetime
 import csv
-import pprint
+import pprint from pprint
 
 db = SqliteDatabase("inventory.db")
 
@@ -10,7 +11,7 @@ class Product(Model):
     product_name = CharField()
     product_quantity = IntegerField()
     product_price = IntegerField()
-    date_updated = DateTimeField()
+    date_updated = DateTimeField(datetime.datetime.now)
 
 
     class Meta():
