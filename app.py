@@ -25,6 +25,7 @@ def initialize_db():
 
 
 def add_inventory():
+    '''Read CSV and add products to DB'''
     with open("inventory.csv", newline="") as csvfile:
         inventory = csv.DictReader(csvfile, delimiter=",")
         
