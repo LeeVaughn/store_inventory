@@ -18,6 +18,12 @@ class Product(Model):
         database = db
 
 
+def initialize_db():
+    """Create the DB and table if they don't exist"""
+    db.connect()
+    db.create_tables([Product], safe=True)
+
+
 def add_inventory():
     with open("inventory.csv", newline="") as csvfile:
         inventory = csv.DictReader(csvfile, delimiter=",")
@@ -40,6 +46,5 @@ def add_inventory():
 
 
 if __name__ == "__main__":
-    db.connect()
-    db.create_tables([Product], safe=True)
+    initialize_db()
     add_inventory()
