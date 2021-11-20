@@ -12,8 +12,10 @@ class Product(Model):
     product_price = IntegerField()
     date_updated = DateTimeField()
 
+
     class Meta():
         database = db
+
 
 def add_inventory():
     with open("inventory.csv", newline="") as csvfile:
@@ -34,6 +36,7 @@ def add_inventory():
                 product_record = Product.get(product_name=product["product_name"])
                 product_record.points = product["points"]
                 product_record.save()
+
 
 if __name__ == "__main__":
     db.connect()
