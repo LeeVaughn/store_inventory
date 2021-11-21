@@ -12,7 +12,7 @@ class Product(Model):
     product_name = CharField()
     product_quantity = IntegerField()
     product_price = IntegerField()
-    date_updated = DateTimeField(datetime.datetime.now)
+    date_updated = DateTimeField(default=datetime.datetime.now)
 
 
     class Meta():
@@ -47,10 +47,25 @@ def add_inventory():
                 product_record.save()
 
 
+def view_product():
+    """View single product's inventory"""
+    entered_id = input("Enter the product id number of the product you would like to view: ")
+    product = Product.get(Product.product_id)
+    print(product)
+
+
+def add_product():
+    """Add a new product to the database"""
+
+
+def backup_db():
+    """Make a backup of the entire inventory"""
+
+
 menu = OrderedDict([
-    ("v", view_product)
-    ("a", add_product)
-    ("b", backup_db)
+    ("v", view_product),
+    ("a", add_product),
+    ("b", backup_db),
 ])
 
 if __name__ == "__main__":
