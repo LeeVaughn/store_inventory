@@ -1,4 +1,6 @@
+from collections import OrderedDict
 import datetime
+import os
 import csv
 from typing import OrderedDict
 
@@ -25,19 +27,25 @@ def initialize_db():
     db.create_tables([Product], safe=True)
 
 
+def clear_screen():
+    os.system("cls" if os.name == "nt" else "clear")
+
+
 def menu_loop():
     """Show the menu."""
     choice = None
 
-    print("Enter 'q' to quit.")
+    while choice != "q":
+        print("Enter 'q' to quit.")
 
-    for key, value in menu.items():
-        print("{}) {}".format(key, value.__doc__))
+        for key, value in menu.items():
+            print("{}) {}".format(key, value.__doc__))
 
-    choice = input("Selection: ").lower().strip()
+        choice = input("Selection: ").lower().strip()
 
-    if choice in menu:
-        menu[choice]()
+        if choice in menu:
+            clear_screen()
+            menu[choice]()
 
 
 def add_inventory():
@@ -66,6 +74,7 @@ def view_product():
     """View single product's inventory."""
     entered_id = input("Enter the product id number of the product you would like to view: ")
     product = Product.get(Product.product_id)
+    print(product)
     print(product.product_name)
 
 
