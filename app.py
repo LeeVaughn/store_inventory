@@ -20,13 +20,28 @@ class Product(Model):
 
 
 def initialize_db():
-    """Create the DB and table if they don't exist"""
+    """Create the DB and table if they don't exist."""
     db.connect()
     db.create_tables([Product], safe=True)
 
 
+def menu_loop():
+    """Show the menu."""
+    choice = None
+
+    print("Enter 'q' to quit.")
+
+    for key, value in menu.items():
+        print("{}) {}".format(key, value.__doc__))
+
+    choice = input("Selection: ").lower().strip()
+
+    if choice in menu:
+        menu[choice]()
+
+
 def add_inventory():
-    '''Read CSV and add products to DB'''
+    '''Read CSV and add products to DB.'''
     with open("inventory.csv", newline="") as csvfile:
         inventory = csv.DictReader(csvfile, delimiter=",")
         
@@ -48,18 +63,18 @@ def add_inventory():
 
 
 def view_product():
-    """View single product's inventory"""
+    """View single product's inventory."""
     entered_id = input("Enter the product id number of the product you would like to view: ")
     product = Product.get(Product.product_id)
-    print(product)
+    print(product.product_name)
 
 
 def add_product():
-    """Add a new product to the database"""
+    """Add a new product to the database."""
 
 
 def backup_db():
-    """Make a backup of the entire inventory"""
+    """Make a backup of the entire inventory."""
 
 
 menu = OrderedDict([
@@ -71,3 +86,4 @@ menu = OrderedDict([
 if __name__ == "__main__":
     initialize_db()
     add_inventory()
+    menu_loop()
