@@ -36,10 +36,13 @@ def menu_loop():
     choice = None
 
     while choice != "q":
-        print("Enter 'q' to quit.")
+        clear_screen()
 
         for key, value in menu.items():
             print("{}) {}".format(key, value.__doc__))
+
+        print("q) Quit.")
+        print("\n")
 
         choice = input("Selection: ").lower().strip()
 
@@ -73,16 +76,26 @@ def add_inventory():
 def view_product():
     """View single product's inventory."""
     entered_id = input("Enter the product id number of the product you would like to view: ")
-    product = Product.get(Product.product_id)
+    product = Product.get(Product.product_id == entered_id)
 
     clear_screen()
+
     print("Product Details")
     print("-" * 15)
-    print("ID: ", product)
+    print("ID: ", product.product_id)
     print("Name: ", product.product_name)
-    print("Price: ", product.product_price)
+    # https://stackoverflow.com/questions/21208376/converting-float-to-dollars-and-cents
+    print("Price: ", "${:,.2f}".format(product.product_price * 0.01))
     print("Quantity: ", product.product_quantity)
     print("Last Updated: ", product.date_updated)
+    print("\n")
+
+    next_action = input("Enter 'v' to view another item or 'r' to return to main menu: ").lower().strip()
+
+    print("\n")
+
+    if next_action == 'v':
+        view_product()
 
 
 def add_product():
