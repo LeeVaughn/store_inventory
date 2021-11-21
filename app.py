@@ -74,8 +74,15 @@ def view_product():
     """View single product's inventory."""
     entered_id = input("Enter the product id number of the product you would like to view: ")
     product = Product.get(Product.product_id)
-    print(product)
-    print(product.product_name)
+
+    clear_screen()
+    print("Product Details")
+    print("-" * 15)
+    print("ID: ", product)
+    print("Name: ", product.product_name)
+    print("Price: ", product.product_price)
+    print("Quantity: ", product.product_quantity)
+    print("Last Updated: ", product.date_updated)
 
 
 def add_product():
