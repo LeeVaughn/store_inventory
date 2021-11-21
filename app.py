@@ -1,7 +1,8 @@
-from peewee import *
 import datetime
 import csv
-import pprint from pprint
+from typing import OrderedDict
+
+from peewee import *
 
 db = SqliteDatabase("inventory.db")
 
@@ -45,6 +46,12 @@ def add_inventory():
                 product_record.points = product["points"]
                 product_record.save()
 
+
+menu = OrderedDict([
+    ("v", view_product)
+    ("a", add_product)
+    ("b", backup_db)
+])
 
 if __name__ == "__main__":
     initialize_db()
