@@ -140,7 +140,6 @@ def backup_db():
                 "date_updated": product.date_updated
             })
 
-
     input("Inventory backed up! Press enter to return to main menu.")
 
 
