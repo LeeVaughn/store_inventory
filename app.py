@@ -2,7 +2,6 @@ from collections import OrderedDict
 import datetime
 import os
 import csv
-from typing import OrderedDict
 
 from peewee import *
 
@@ -94,12 +93,29 @@ def view_product():
 
     print("\n")
 
-    if next_action == 'v':
+    if next_action == "v":
         view_product()
 
 
 def add_product():
     """Add a new product to the database."""
+    entered_name = input("Enter a name for the new product: ")
+    entered_quantity = input("Enter a quantity for the new product: ")
+    entered_price = input("Enter a price for the new product: ")
+
+    if entered_price:
+        entered_price = int(float(entered_price) * 100)
+
+    if entered_name and entered_quantity and entered_price:
+        Product.create(product_name=entered_name, product_quantity=entered_quantity, product_price=entered_price)
+        print("Product successfully added!")
+    else:
+        print("\nInvalid Input!\n")
+
+    next_action = input("Enter 'a' to enter a product or 'r' to return to main menu: ").lower().strip()
+
+    if next_action == "a":
+        add_product()
 
 
 def backup_db():
