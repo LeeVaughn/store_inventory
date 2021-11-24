@@ -13,7 +13,7 @@ class Product(Model):
     product_name = CharField()
     product_quantity = IntegerField()
     product_price = IntegerField()
-    date_updated = DateTimeField(default=datetime.datetime.now)
+    date_updated = DateTimeField(default=datetime.datetime.today().strftime("%m/%d/%Y"))
 
 
     class Meta():
@@ -39,7 +39,7 @@ def menu_loop():
 
         for key, value in menu.items():
             print("{}) {}".format(key, value.__doc__))
-
+        
         print("q) Quit.")
         print("\n")
 
@@ -54,22 +54,24 @@ def add_inventory():
     '''Read CSV and add products to DB.'''
     with open("inventory.csv", newline="") as csvfile:
         inventory = csv.DictReader(csvfile, delimiter=",")
-        
-        for product in inventory:
-            # converts string excluding $ to equivalent of cents
-            price_in_cents = int(float(product["product_price"][1:]) * 100)
 
-            try:
-                Product.create(
-                    product_name=product["product_name"],
-                    product_quantity=product["product_quantity"],
-                    product_price=price_in_cents,
-                    date_updated=product["date_updated"]
-                )
-            except IntegrityError:
-                product_record = Product.get(product_name=product["product_name"])
-                product_record.points = product["points"]
-                product_record.save()
+        # if db is empty, add CSV data
+        if Product.select().count() == 0:      
+            for product in inventory:
+                # converts string excluding $ to equivalent of cents
+                price_in_cents = int(float(product["product_price"][1:]) * 100)
+
+                try:
+                    Product.create(
+                        product_name=product["product_name"],
+                        product_quantity=product["product_quantity"],
+                        product_price=price_in_cents,
+                        date_updated=product["date_updated"]
+                    )
+                except IntegrityError:
+                    product_record = Product.get(product_name=product["product_name"])
+                    product_record.points = product["points"]
+                    product_record.save()
 
 
 def view_product():
@@ -122,6 +124,24 @@ def add_product():
 
 def backup_db():
     """Make a backup of the entire inventory."""
+    inventory = Product.select()
+    
+    with open("backup.csv", "w", newline="") as csvfile:
+        fieldnames = ["product_name", "product_price", "product_quantity", "date_updated"]
+        productwriter = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        productwriter.writeheader()
+
+        for product in inventory:
+            productwriter.writerow({
+                "product_name": product.product_name,
+                "product_price": "$" + format(product.product_price * 0.01, ".2f"),
+                "product_quantity": product.product_quantity,
+                "date_updated": product.date_updated
+            })
+
+
+    input("Inventory backed up! Press enter to return to main menu.")
 
 
 menu = OrderedDict([
