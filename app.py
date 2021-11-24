@@ -108,12 +108,14 @@ def add_product():
 
     if entered_name and entered_quantity and entered_price:
         Product.create(product_name=entered_name, product_quantity=entered_quantity, product_price=entered_price)
-        print("Product successfully added!")
+        print("\nProduct successfully added!\n")
     else:
         print("\nInvalid Input!\n")
 
     next_action = input("Enter 'a' to enter a product or 'r' to return to main menu: ").lower().strip()
 
+    clear_screen()
+    
     if next_action == "a":
         add_product()
 
